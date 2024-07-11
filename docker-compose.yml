@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  telemedicina:
+    build: telemedicinaBack
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://telemed:3306/telemedicina_db?createDatabaseIfNotExist=true&serverTimezone=UTC
+      DB_USER_NAME: root
+      DB_PASSWORD: root
+    restart: always
+    depends_on:
+      telemed:
+          condition: service_healthy
+  telemed:
+    image: mysql:8.0.28 
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: telemedicina_db
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
