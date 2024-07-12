@@ -31,7 +31,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/home/**").permitAll()
+                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sessionManager ->
                         sessionManager
