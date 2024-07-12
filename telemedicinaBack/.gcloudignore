@@ -15,6 +15,7 @@
 .mvn
 mvnw
 mvnw.cmd
+Dockerfile
 
 # Target directory for maven builds
 target/
