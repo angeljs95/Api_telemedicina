@@ -17,18 +17,17 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @Data
-@Table(name="user" ,uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
+@Table(name="user" ,uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-   // @Column(name="email")
-    private String username;
     private String nombre;
+
     @Column(nullable = false)
-    private String email;
+    private String username;
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;

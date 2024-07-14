@@ -1,6 +1,7 @@
 package com.NoCountry.telemedicinaBack.Jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -19,18 +20,21 @@ public class JwtService {
 
 
     private static final String SECRET_KEY = "11111111111111asdaf18asf877777777777777777777777";
+    private static final long ACCESS_TOKEN_VALIDATE_SECONDS= 2_592_000L;
 
     public String getToken(UserDetails user) {
         return getToken(new HashMap<>(), user);
 
     }
 
+
     private String getToken(Map<String, Object> extraClaims, UserDetails user) {
+        long expirationTime= ACCESS_TOKEN_VALIDATE_SECONDS * 1_000;
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60* 2))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60* expirationTime))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -65,7 +69,8 @@ public class JwtService {
         return getClaim(token, Claims::getExpiration);
     }
     private boolean isTokenExpired(String token){
-        return getExpiration(token).before(new Date());
+      //  long expirationTime= ACCESS_TOKEN_VALIDATE_SECONDS * 1_000;
+        return getExpiration(token).before(new Date(System.currentTimeMillis()));//System.currentTimeMillis()+ expirationTime));
     }
 
 }

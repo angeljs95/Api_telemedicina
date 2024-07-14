@@ -26,16 +26,16 @@ public class AuthService {
     private final AuthenticationManager authManager;
 
 
-    public AuthResponse login(LoginRequest loginRequest){
+    public AuthResponse login(LoginRequest loginRequest) {
 
-        authManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getContrasenia()));
-        UserDetails user = userService.findByEmail(loginRequest.getEmail());
-        System.out.println(" el user es+ "+ user.getPassword());
+        authManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
+        UserDetails user = userService.findByUsername(loginRequest.getUsername());
         String token=  jwtService.getToken(user);
         return AuthResponse.builder().token(token).build();
+
     }
 
-    @Transactional
+    //@Transactional
     public AuthResponse register(User userDto){
 
         User user=userService.registrar(userDto);
