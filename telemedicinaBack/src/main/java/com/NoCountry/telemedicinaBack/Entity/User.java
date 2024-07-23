@@ -3,11 +3,11 @@ package com.NoCountry.telemedicinaBack.Entity;
 import com.NoCountry.telemedicinaBack.Enum.Role;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,20 +17,29 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @Data
-@Table(name="user" ,uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String nombre;
+    private String apellido;
+    private int documento;
+    private String pais;
+    private String localidad;
+    private String provincia;
+    private Integer telefono;
 
     @Column(nullable = false)
     private String username;
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private LocalDate fecha_Registro;
+    private boolean estado;
 
 
     @Override

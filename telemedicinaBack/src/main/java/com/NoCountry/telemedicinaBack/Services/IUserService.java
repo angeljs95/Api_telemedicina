@@ -8,9 +8,9 @@ public interface IUserService {
 
     public User registrar(User user);
 
-    public void eliminarUsuario(String id);
+    public void eliminarUsuario(Long id);
 
     public List<User> listarUsuarios();
 
-    public User buscarUsuarioPorId(String id);
+    public User buscarUsuarioPorId(Long id);
 }
