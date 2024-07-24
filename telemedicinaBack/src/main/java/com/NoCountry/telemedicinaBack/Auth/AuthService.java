@@ -36,7 +36,7 @@ public class AuthService {
     }
 
     //@Transactional
-    public AuthResponse register(User userDto){
+    public AuthResponse register(User userDto) {
 
         User user=userService.registrar(userDto);
         if(user!=null){
