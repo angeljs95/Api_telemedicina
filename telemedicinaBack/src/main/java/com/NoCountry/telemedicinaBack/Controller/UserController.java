@@ -9,6 +9,7 @@ import com.NoCountry.telemedicinaBack.Enum.Role;
 import com.NoCountry.telemedicinaBack.Services.MedicoServiceImp;
 import com.NoCountry.telemedicinaBack.Services.PacienteServiceImp;
 import com.NoCountry.telemedicinaBack.Services.UserService;
+import com.google.api.Http;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +75,13 @@ public class UserController {
     public ResponseEntity<List<User>> listarUsuarios() {
         List<User> listaDeUsuarios = userService.listarUsuarios();
         return ResponseEntity.ok(listaDeUsuarios);
+    }
+
+    @GetMapping("/listarMedicos")
+    public ResponseEntity<List<Medico>> listarLosMedicos(){
+        List<Medico> listar= medicoService.listarTodosLosMedicos();
+        return ResponseEntity.ok(listar);
+
 
     }
 
