@@ -1,6 +1,7 @@
 package com.NoCountry.telemedicinaBack.Dtos;
 
 import com.NoCountry.telemedicinaBack.Enum.Genero;
+import com.NoCountry.telemedicinaBack.Enum.Role;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
@@ -14,24 +15,31 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActualizarDto {
+public class PacienteDto {
 
-    //------------ para medico----------
-    private String especialidad;
-    private String n_licencia;
-    private int anios_experiencia;
-    private Long num_contacto;
-    private String consultorio;
+    private Long id;
+    private String nombre;
+    private String apellido;
+    private Long documento;
+    private String pais;
+    private String localidad;
+    private String provincia;
+    private Long telefono;
+    private String username;
+    private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    private LocalDate fecha_Registro;
+    private boolean estado;
 
-    //--------para paciente-------------
 
+    //-----atributos paciente
     @Enumerated(EnumType.STRING)
     private Genero genero;
     private LocalDate fechaDeNacimiento;
     private String alergias;
     // private  String historialMedico;
-    private String provincia;
-    private String localidad;
-    private Long n_contacto;
+    private Long contacto_emergencia;
+
 
 }

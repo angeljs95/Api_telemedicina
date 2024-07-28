@@ -1,20 +1,23 @@
 package com.NoCountry.telemedicinaBack.Controller;
 
 import com.NoCountry.telemedicinaBack.Dtos.ConsultaDto;
+import com.NoCountry.telemedicinaBack.Dtos.HorariosDto;
+import com.NoCountry.telemedicinaBack.Dtos.MedicoDto;
 import com.NoCountry.telemedicinaBack.Entity.*;
 import com.NoCountry.telemedicinaBack.Enum.Role;
 import com.NoCountry.telemedicinaBack.Services.ConsultaService;
 import com.NoCountry.telemedicinaBack.Services.HorarioDeAtencionService;
 import com.NoCountry.telemedicinaBack.Services.PacienteServiceImp;
 import com.NoCountry.telemedicinaBack.Services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/consultas")
@@ -26,11 +29,15 @@ public class ConsultaController {
     private UserService userService;
     @Autowired
     private HorarioDeAtencionService horarioService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/{medicoId}")
-    public ResponseEntity<List<HorarioDeAtencion>> obtenerHorariosPorDoctor(@PathVariable Long medicoId) {
+    public ResponseEntity<List<HorariosDto>> obtenerHorariosPorDoctor(@PathVariable Long medicoId) {
         List<HorarioDeAtencion> horarios = horarioService.obtenerTodosLosHorariosPorMedico(medicoId);
-        return new ResponseEntity<>(horarios, HttpStatus.OK);
+        List <HorariosDto> horariosDtos= horarios.stream().map(horario ->modelMapper.map(horario, HorariosDto.class))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(horariosDtos, HttpStatus.OK);
     }
 
     @PostMapping("/agendar/{horarioId}")

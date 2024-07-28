@@ -1,10 +1,7 @@
 package com.NoCountry.telemedicinaBack.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.modelmapper.internal.bytebuddy.implementation.bind.annotation.BindingPriority;
 
 import java.time.LocalDateTime;
@@ -28,4 +25,12 @@ public class HorarioDeAtencion {
     @JoinColumn(name = "medico_id")
     private Medico medico;
 
+//    public HorarioDeAtencion(LocalDateTime inicio, LocalDateTime fin) {
+//        this.inicio = inicio;
+//        this.fin = fin;
+//    }
+//
+//    public boolean seSuperponeCon(HorarioDeAtencion horario) {
+//        return (inicio.isBefore(horario.fin) && fin.isAfter(horario.inicio));
+//    }
 }

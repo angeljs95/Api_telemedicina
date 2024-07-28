@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Data
 //@AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 @ToString
 //@PrimaryKeyJoinColumn(referencedColumnName ="User")
 public class Paciente extends User{
@@ -29,6 +29,7 @@ public class Paciente extends User{
   //  ----------Relaciones------------
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Consulta> consultas= new ArrayList<>();
+
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prescripcion> prescripciones;
@@ -55,10 +56,15 @@ public class Paciente extends User{
         this.setRole(user.getRole());
         this.setFecha_Registro(user.getFecha_Registro());
         this.setEstado(user.isEstado());
+        this.setSlug(slug(user));
     }
-
-    public Paciente(){
-
+    public static String slug(User user){
+        String generador;
+        String primerNombre = user.getNombre().split(" ")[0];
+        String primerosTresDigitos = String.valueOf(user.getDocumento()).substring(0, 3);
+        String obtenerPais= user.getPais();
+        generador= primerNombre+"-"+primerosTresDigitos+"-"+obtenerPais;
+        return generador;
     }
 
 }

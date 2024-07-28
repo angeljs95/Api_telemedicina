@@ -25,7 +25,7 @@ public class Medico extends User{
  private String especialidad;
  private String n_licencia;
  private int anios_experiencia;
- private Integer num_contacto;
+ private Long num_contacto;
  private String consultorio;
 
  @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -52,6 +52,16 @@ public class Medico extends User{
   this.setRole(user.getRole());
   this.setFecha_Registro(user.getFecha_Registro());
   this.setEstado(user.isEstado());
+  this.setSlug(slug(user));
+ }
+
+ public static String slug(User user){
+  String generador;
+  String primerNombre = user.getNombre().split(" ")[0];
+  String primerosTresDigitos = String.valueOf(user.getDocumento()).substring(0, 3);
+  String obtenerPais= user.getPais();
+generador= primerNombre+"-"+primerosTresDigitos+"-"+obtenerPais;
+return generador;
  }
 
 }

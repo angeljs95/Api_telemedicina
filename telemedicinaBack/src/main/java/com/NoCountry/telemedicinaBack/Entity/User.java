@@ -27,11 +27,11 @@ public class User implements UserDetails {
 
     private String nombre;
     private String apellido;
-    private int documento;
+    private Long documento;
     private String pais;
     private String localidad;
     private String provincia;
-    private Integer telefono;
+    private Long telefono;
 
     @Column(nullable = false)
     private String username;
@@ -40,6 +40,7 @@ public class User implements UserDetails {
     private Role role;
     private LocalDate fecha_Registro;
     private boolean estado;
+    private String slug;
 
 
     @Override
