@@ -39,7 +39,7 @@ public class HorarioDeAtencionService {
 
         for( int i=0; i<horariosMedico.size();  i++){
             if( horarioAtencion.getInicio().equals(horariosMedico.get(i).getInicio())){
-                System.out.println(" el horario ya existe menor");
+                System.out.println(" el horario ya existe");
                 System.out.println("ta esxiiste el horario");
                 return false;
             }

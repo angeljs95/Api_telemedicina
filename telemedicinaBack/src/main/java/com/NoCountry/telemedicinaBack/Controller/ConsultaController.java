@@ -40,6 +40,14 @@ public class ConsultaController {
         return new ResponseEntity<>(horariosDtos, HttpStatus.OK);
     }
 
+    @GetMapping("/{medicoId}")
+    public ResponseEntity<List<HorariosDto>> obtenerHorariosDisponiblesPorMedico(@PathVariable Long medicoId) {
+        List<HorarioDeAtencion> horarios = horarioService.obtenerHorariosDisponiblesPorMedico(medicoId);
+        List <HorariosDto> horariosDtos= horarios.stream().map(horario ->modelMapper.map(horario, HorariosDto.class))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(horariosDtos, HttpStatus.OK);
+    }
+
     @PostMapping("/agendar/{horarioId}")
     public ResponseEntity<String> agendarCita(@PathVariable Long horarioId,
                                                 @RequestBody ConsultaDto consultaDto) {
