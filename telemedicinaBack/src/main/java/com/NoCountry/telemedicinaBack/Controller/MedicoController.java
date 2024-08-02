@@ -1,5 +1,6 @@
 package com.NoCountry.telemedicinaBack.Controller;
 
+import com.NoCountry.telemedicinaBack.Dtos.HorarioResponse;
 import com.NoCountry.telemedicinaBack.Dtos.HorariosDto;
 import com.NoCountry.telemedicinaBack.Entity.*;
 import com.NoCountry.telemedicinaBack.Services.HorarioDeAtencionService;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -33,15 +35,38 @@ public class MedicoController {
 
         return new ResponseEntity<>(horariosDto, HttpStatus.OK);
     }
+//    @PostMapping("/horarios")
+//    public ResponseEntity<Boolean> guardarHorario(@RequestBody HorarioDeAtencion horarioAtencion) {
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        User user = userService.findByUsername(userDetails.getUsername());
+//        Medico medico= userService.buscarMedicoXID(user.getId());
+//        horarioAtencion.setMedico(medico);
+//        LocalDateTime horaFin = horarioAtencion.getInicio().plusHours(1).plusMinutes(30);
+//        horarioAtencion.setFin(horaFin);
+//       horarioService.guardarHorarioAtencion(horarioAtencion);
+//        return new ResponseEntity<>(true, HttpStatus.CREATED);
+//    }
+
     @PostMapping("/horarios")
-    public ResponseEntity<Boolean> guardarHorario(@RequestBody HorarioDeAtencion horarioAtencion) {
+    public ResponseEntity<HorarioResponse> guardarHorario(@RequestBody HorarioDeAtencion horarioAtencion) {
+//
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findByUsername(userDetails.getUsername());
-        Medico medico= userService.buscarMedicoXID(user.getId());
+        Medico medico = userService.buscarMedicoXID(user.getId());
         horarioAtencion.setMedico(medico);
-        HorarioDeAtencion nuevoHorario = horarioService.guardarHorarioAtencion(horarioAtencion);
-        return new ResponseEntity<>(true, HttpStatus.CREATED);
+        horarioAtencion.setFin(horarioAtencion.getInicio().plusHours(1).plusMinutes(30));
+       if(horarioService.guardarHorarioAtencion(horarioAtencion)){
+          HorarioResponse horario= new HorarioResponse(true, "Se ha guardado el horario exitosamente");
+    return new ResponseEntity<>(horario, HttpStatus.CREATED);
+       }
+       else{
+        HorarioResponse horario= new HorarioResponse(false, "ha ocurriodo un error");
+return ResponseEntity.status(HttpStatus.NOT_FOUND).body(horario);
+       }
     }
+       // return new ResponseEntity<>(true, HttpStatus.CREATED);}
+
+
     @PostMapping("/horarios/{idHorario}")
     public ResponseEntity<String> habilitarHorario(@PathVariable Long idHorario){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

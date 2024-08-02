@@ -1,5 +1,6 @@
 package com.NoCountry.telemedicinaBack.Entity;
 
+import com.NoCountry.telemedicinaBack.Enum.Genero;
 import com.NoCountry.telemedicinaBack.Enum.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,14 +26,18 @@ public class Medico extends User{
  private String especialidad;
  private String n_licencia;
  private int anios_experiencia;
- private Integer num_contacto;
+ private Long num_contacto;
  private String consultorio;
+ @Enumerated(EnumType.STRING)
+ private Genero genero;
+ private String imagen;
+
 
  @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, orphanRemoval = true)
  private List<Consulta> consultas= new ArrayList<>();
 
- @OneToMany(mappedBy = "medico")//, cascade = CascadeType.ALL, orphanRemoval = true)
- private List<Prescripcion> prescripciones;
+// @OneToMany(mappedBy = "medico")//, cascade = CascadeType.ALL, orphanRemoval = true)
+// private List<Prescripcion> prescripciones;
 
  @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, orphanRemoval = true)
  private List<HorarioDeAtencion> horariosDeAtencion;
@@ -52,6 +57,16 @@ public class Medico extends User{
   this.setRole(user.getRole());
   this.setFecha_Registro(user.getFecha_Registro());
   this.setEstado(user.isEstado());
+  this.setSlug(slug(user));
+ }
+
+ public static String slug(User user){
+  String generador;
+  String primerNombre = user.getNombre().split(" ")[0];
+  String primerosTresDigitos = String.valueOf(user.getDocumento()).substring(0, 3);
+  String obtenerPais= user.getPais();
+generador= primerNombre+"-"+primerosTresDigitos+"-"+obtenerPais;
+return generador;
  }
 
 }

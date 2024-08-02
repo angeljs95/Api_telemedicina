@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+//@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,14 +32,14 @@ public class HistorialMedico {
 //    @OneToOne
 //    private Consulta consulta;
 //
-    @OneToOne
-    @JoinColumn(name = "paciente_id")
-   private Paciente paciente;
-
-    @OneToMany(mappedBy = "historialMedico", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HojaClinica> hojasClinicas = new ArrayList<>();
-
-    @OneToMany(mappedBy = "historialMedico", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Archivo> archivos = new ArrayList<>();
+//    @OneToOne
+//    @JoinColumn(name = "paciente_id")
+//   private Paciente paciente;
+//
+//    @OneToMany(mappedBy = "historialMedico", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<HojaClinica> hojasClinicas = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "historialMedico", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Archivo> archivos = new ArrayList<>();
 
 }

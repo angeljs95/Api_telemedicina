@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Data
 //@AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 @ToString
 //@PrimaryKeyJoinColumn(referencedColumnName ="User")
 public class Paciente extends User{
@@ -25,16 +25,24 @@ public class Paciente extends User{
     private String alergias;
    // private  String historialMedico;
     private Long contacto_emergencia;
+    private double peso;
+    private double altura;
 
   //  ----------Relaciones------------
-    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Consulta> consultas= new ArrayList<>();
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Prescripcion> prescripciones;
+    private List<HojaClinica> hojasClinicas = new ArrayList<>();
 
-    @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private HistorialMedico historialMedico;
+//
+//    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Consulta> consultas= new ArrayList<>();
+//
+//
+//    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Prescripcion> prescripciones;
+//
+//    @OneToOne(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private HistorialMedico historialMedico;
 
 
     // endPoint de consulta
@@ -55,10 +63,15 @@ public class Paciente extends User{
         this.setRole(user.getRole());
         this.setFecha_Registro(user.getFecha_Registro());
         this.setEstado(user.isEstado());
+        this.setSlug(slug(user));
     }
-
-    public Paciente(){
-
+    public static String slug(User user){
+        String generador;
+        String primerNombre = user.getNombre().split(" ")[0];
+        String primerosTresDigitos = String.valueOf(user.getDocumento()).substring(0, 3);
+        String obtenerPais= user.getPais();
+        generador= primerNombre+"-"+primerosTresDigitos+"-"+obtenerPais;
+        return generador;
     }
 
 }

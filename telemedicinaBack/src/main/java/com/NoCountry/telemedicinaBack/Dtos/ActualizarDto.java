@@ -20,8 +20,9 @@ public class ActualizarDto {
     private String especialidad;
     private String n_licencia;
     private int anios_experiencia;
-    private Integer num_contacto;
+    private Long num_contacto;
     private String consultorio;
+    private String imagen;
 
     //--------para paciente-------------
 

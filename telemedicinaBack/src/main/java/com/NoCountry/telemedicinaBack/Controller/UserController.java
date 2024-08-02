@@ -1,7 +1,9 @@
 package com.NoCountry.telemedicinaBack.Controller;
 
 import com.NoCountry.telemedicinaBack.Dtos.ActualizarDto;
+import com.NoCountry.telemedicinaBack.Dtos.HorariosDto;
 import com.NoCountry.telemedicinaBack.Dtos.MedicoDto;
+import com.NoCountry.telemedicinaBack.Dtos.PacienteDto;
 import com.NoCountry.telemedicinaBack.Entity.Medico;
 import com.NoCountry.telemedicinaBack.Entity.Paciente;
 import com.NoCountry.telemedicinaBack.Entity.User;
@@ -9,9 +11,10 @@ import com.NoCountry.telemedicinaBack.Enum.Role;
 import com.NoCountry.telemedicinaBack.Services.MedicoServiceImp;
 import com.NoCountry.telemedicinaBack.Services.PacienteServiceImp;
 import com.NoCountry.telemedicinaBack.Services.UserService;
-import com.google.api.Http;
+//import com.google.api.Http;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,15 +32,6 @@ public class UserController {
     @Autowired
     private MedicoServiceImp medicoService;
 
-   /* @PostMapping("/registro")
-    public ResponseEntity<User> registro(@RequestBody User usuario) {
-
-        if (usuario != null) {
-            User user = userService.registrar(usuario);
-            return ResponseEntity.ok(user);
-        }
-        return ResponseEntity.noContent().build();
-    }*/
 
     @PutMapping("/actualizar")
     public ResponseEntity<?> actualizar(@RequestBody ActualizarDto actualizarDto) {
@@ -64,6 +58,7 @@ public class UserController {
             medico.setEspecialidad(actualizarDto.getEspecialidad());
             medico.setAnios_experiencia(actualizarDto.getAnios_experiencia());
             medico.setN_licencia(actualizarDto.getN_licencia());
+            medico.setImagen(actualizarDto.getImagen());
             usuarioActualizado= userService.actualizarMedico(medico);
         } else {
             return ResponseEntity.noContent().build();
@@ -78,22 +73,57 @@ public class UserController {
     }
 
     @GetMapping("/listarMedicos")
-    public ResponseEntity<List<Medico>> listarLosMedicos(){
+    public ResponseEntity<List<MedicoDto>> listarLosMedicos(){
         List<Medico> listar= medicoService.listarTodosLosMedicos();
-        return ResponseEntity.ok(listar);
+        List<MedicoDto> medicoDtos= listar.stream().map(medico -> modelMapper.map(medico, MedicoDto.class))
+                .collect(java.util.stream.Collectors.toList());
+        return ResponseEntity.ok(medicoDtos);
+    }
+    @GetMapping("/listarMedicosPorEspecialidad")
+    public ResponseEntity<List<MedicoDto>> listarPorEspecialidad(@RequestParam String especialidad){
 
+        List<MedicoDto> listar= medicoService.listarMedicoPorEspecialidad(especialidad);
+        return new ResponseEntity<>(listar, HttpStatus.CREATED);
 
     }
+    @GetMapping("/listarPorCriterio")
+    public ResponseEntity<List<MedicoDto>> listarPorCriterio(@RequestParam String filtroBusqueda){
 
-    @GetMapping("/ver")
-    public ResponseEntity<User> mostrarUsuario(@RequestParam Long id) {
-        User usuario = userService.buscarUsuarioPorId(id);
-        if (usuario != null) {
-            return ResponseEntity.ok(usuario);
-        } else {
+        if(filtroBusqueda== null){
+            listarLosMedicos();
+        }
+        List<MedicoDto> listar= medicoService.listarMedicoPorCriterio(filtroBusqueda);
+        if (listar.isEmpty()){
             return ResponseEntity.notFound().build();
         }
+        return new ResponseEntity<>(listar, HttpStatus.CREATED);
+
     }
+
+    @GetMapping("/medico/{medicoId}")
+    public ResponseEntity<MedicoDto> verMedico(@PathVariable Long medicoId){
+        Medico medico= medicoService.findByIdMedico(medicoId);
+        if(medico==null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(modelMapper.map(medico, MedicoDto.class), HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/ver")
+    public ResponseEntity<?> mostrarUsuario() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
+        if (user.getRole()==Role.PACIENTE){
+            Paciente paciente= userService.buscarPacienteXId(user.getId());
+            return new ResponseEntity<>(modelMapper.map(paciente, PacienteDto.class), HttpStatus.CREATED);
+        }
+        if (user.getRole()==Role.MEDICO){
+            Medico medico = userService.buscarMedicoXID(user.getId());
+            return new ResponseEntity<>(modelMapper.map(medico, MedicoDto.class), HttpStatus.CREATED);
+        }
+            return ResponseEntity.notFound().build();
+        }
 
     @PostMapping("/eliminar")
     public ResponseEntity<Boolean> eliminar(Long id) {

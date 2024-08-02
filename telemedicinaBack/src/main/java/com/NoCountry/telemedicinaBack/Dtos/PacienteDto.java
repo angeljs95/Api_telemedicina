@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Builder
 @Data
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class MedicoDto {
+@NoArgsConstructor
+public class PacienteDto {
 
     private Long id;
     private String nombre;
@@ -31,16 +31,17 @@ public class MedicoDto {
     private Role role;
     private LocalDate fecha_Registro;
     private boolean estado;
+    private double peso;
+    private double altura;
+
+
+    //-----atributos paciente
     @Enumerated(EnumType.STRING)
     private Genero genero;
-
-    private String especialidad;
-    private String n_licencia;
-    private int anios_experiencia;
-    private Long num_contacto;
-    private String consultorio;
-    private String slug;
-    private String imagen;
+    private LocalDate fechaDeNacimiento;
+    private String alergias;
+    // private  String historialMedico;
+    private Long contacto_emergencia;
 
 
 }

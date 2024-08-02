@@ -21,8 +21,8 @@ public class Archivo {
     @Lob
     private byte[] contenido;
 
-    @ManyToOne
-    @JoinColumn(name = "historial_medico_id")
-    private HistorialMedico historialMedico;
+//    @ManyToOne
+//    @JoinColumn(name = "historial_medico_id")
+//    private HistorialMedico historialMedico;
 
 }
