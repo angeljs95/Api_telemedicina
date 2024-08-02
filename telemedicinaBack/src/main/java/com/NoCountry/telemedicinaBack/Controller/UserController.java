@@ -58,6 +58,7 @@ public class UserController {
             medico.setEspecialidad(actualizarDto.getEspecialidad());
             medico.setAnios_experiencia(actualizarDto.getAnios_experiencia());
             medico.setN_licencia(actualizarDto.getN_licencia());
+            medico.setImagen(actualizarDto.getImagen());
             usuarioActualizado= userService.actualizarMedico(medico);
         } else {
             return ResponseEntity.noContent().build();
@@ -98,6 +99,16 @@ public class UserController {
         return new ResponseEntity<>(listar, HttpStatus.CREATED);
 
     }
+
+    @GetMapping("/medico/{medicoId}")
+    public ResponseEntity<MedicoDto> verMedico(@PathVariable Long medicoId){
+        Medico medico= medicoService.findByIdMedico(medicoId);
+        if(medico==null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(modelMapper.map(medico, MedicoDto.class), HttpStatus.CREATED);
+    }
+
 
     @GetMapping("/ver")
     public ResponseEntity<?> mostrarUsuario() {

@@ -40,6 +40,7 @@ public class MedicoDto {
     private Long num_contacto;
     private String consultorio;
     private String slug;
+    private String imagen;
 
 
 }

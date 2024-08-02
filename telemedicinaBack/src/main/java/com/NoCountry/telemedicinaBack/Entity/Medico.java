@@ -30,6 +30,8 @@ public class Medico extends User{
  private String consultorio;
  @Enumerated(EnumType.STRING)
  private Genero genero;
+ private String imagen;
+
 
  @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, orphanRemoval = true)
  private List<Consulta> consultas= new ArrayList<>();

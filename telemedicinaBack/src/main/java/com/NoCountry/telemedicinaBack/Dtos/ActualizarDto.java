@@ -22,6 +22,7 @@ public class ActualizarDto {
     private int anios_experiencia;
     private Long num_contacto;
     private String consultorio;
+    private String imagen;
 
     //--------para paciente-------------
 
