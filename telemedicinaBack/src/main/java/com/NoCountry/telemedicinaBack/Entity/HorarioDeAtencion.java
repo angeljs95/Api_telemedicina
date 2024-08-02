@@ -32,5 +32,6 @@ public class HorarioDeAtencion {
 //
 //    public boolean seSuperponeCon(HorarioDeAtencion horario) {
 //        return (inicio.isBefore(horario.fin) && fin.isAfter(horario.inicio));
+
 //    }
 }

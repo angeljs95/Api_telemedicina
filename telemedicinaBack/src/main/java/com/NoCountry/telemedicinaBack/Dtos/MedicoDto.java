@@ -1,5 +1,6 @@
 package com.NoCountry.telemedicinaBack.Dtos;
 
+import com.NoCountry.telemedicinaBack.Enum.Genero;
 import com.NoCountry.telemedicinaBack.Enum.Role;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -30,6 +31,8 @@ public class MedicoDto {
     private Role role;
     private LocalDate fecha_Registro;
     private boolean estado;
+    @Enumerated(EnumType.STRING)
+    private Genero genero;
 
     private String especialidad;
     private String n_licencia;

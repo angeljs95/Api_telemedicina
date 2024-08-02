@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity
+//@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,8 +27,8 @@ public class Medicamento {
 
     // ---------------Relaciones-----------------
 
-    @ManyToOne
-    @JoinColumn(name="prescripcion_id")
-    private Prescripcion prescripcion;
+//    @ManyToOne
+//    @JoinColumn(name="prescripcion_id")
+//    private Prescripcion prescripcion;
 
 }

@@ -77,7 +77,25 @@ public class UserController {
         List<MedicoDto> medicoDtos= listar.stream().map(medico -> modelMapper.map(medico, MedicoDto.class))
                 .collect(java.util.stream.Collectors.toList());
         return ResponseEntity.ok(medicoDtos);
+    }
+    @GetMapping("/listarMedicosPorEspecialidad")
+    public ResponseEntity<List<MedicoDto>> listarPorEspecialidad(@RequestParam String especialidad){
 
+        List<MedicoDto> listar= medicoService.listarMedicoPorEspecialidad(especialidad);
+        return new ResponseEntity<>(listar, HttpStatus.CREATED);
+
+    }
+    @GetMapping("/listarPorCriterio")
+    public ResponseEntity<List<MedicoDto>> listarPorCriterio(@RequestParam String filtroBusqueda){
+
+        if(filtroBusqueda== null){
+            listarLosMedicos();
+        }
+        List<MedicoDto> listar= medicoService.listarMedicoPorCriterio(filtroBusqueda);
+        if (listar.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return new ResponseEntity<>(listar, HttpStatus.CREATED);
 
     }
 

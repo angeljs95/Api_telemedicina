@@ -31,6 +31,8 @@ public class PacienteDto {
     private Role role;
     private LocalDate fecha_Registro;
     private boolean estado;
+    private double peso;
+    private double altura;
 
 
     //-----atributos paciente

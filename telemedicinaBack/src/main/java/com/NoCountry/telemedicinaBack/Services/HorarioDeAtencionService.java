@@ -29,20 +29,18 @@ public class HorarioDeAtencionService {
      return horarioRepository.findByMedicoId(medicoId);
     }
 
-//    public HorarioDeAtencion guardarHorarioAtencion(HorarioDeAtencion horarioAtencion) {
-//        return horarioRepository.save(horarioAtencion);
-//    }
 
     public Boolean guardarHorarioAtencion(HorarioDeAtencion horarioAtencion) {
 
         List<HorarioDeAtencion> horariosMedico = horarioRepository.findByMedicoId(horarioAtencion.getMedico().getId());
-
+// Validamos que el horario que esta tratando de ingresar este ocupado, sino registra el nuevo horario
         for( int i=0; i<horariosMedico.size();  i++){
-            if( horarioAtencion.getInicio().equals(horariosMedico.get(i).getInicio())){
-                System.out.println(" el horario ya existe");
-                System.out.println("ta esxiiste el horario");
-                return false;
-            }
+      if( horarioAtencion.getInicio().isBefore(horariosMedico.get(i).getFin())){
+          if(horarioAtencion.getFin().isAfter(horariosMedico.get(i).getInicio())){
+              System.out.println("El horario se encuentra registrado");
+              return false;
+          }
+      }
         }
                 HorarioDeAtencion nuevoHorario = HorarioDeAtencion.builder()
                         .inicio(horarioAtencion.getInicio())
