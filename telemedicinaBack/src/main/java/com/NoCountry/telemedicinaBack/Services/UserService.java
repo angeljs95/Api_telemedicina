@@ -29,16 +29,6 @@ public class UserService implements IUserService{
     @Autowired
     private PacienteRepository pacienteRepository;
 
-  /*  @Override
-    public User registrar(User usuario) {
-        User user= User.builder()
-                .nombre(usuario.getNombre())
-                .username(usuario.getUsername())
-                .password(passwordEncoder.encode(usuario.getPassword()))
-                .role(Role.USUARIO)
-                .build();
-        return userRepository.save(user);
-    }*/
 
     @Override
     public User registrar(User usuario){
